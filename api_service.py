@@ -180,12 +180,13 @@ def get_fact_weather(ya_weather_dict: dict) -> FactWeather:
     )
 
 
-def get_one_part(ya_weather_dict: dict) ->
+def get_one_part(ya_weather_dict: dict) -> Part:
+    pass
 
 
 def get_parts_forecast(ya_weather_dict: dict) -> Parts:
     return Parts(
-        morning=get_one_part()
+        morning=get_one_part(ya_weather_dict)
     )
 
 

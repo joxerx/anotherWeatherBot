@@ -26,7 +26,7 @@ async def handle_location(message: types.Message):
     await message.answer(reply, reply_markup=types.ReplyKeyboardRemove())
 
 
-@dp.message_handler(commands=['locate_me'])
+@dp.message_handler(commands=['set_location'])
 async def cmd_locate_me(message: types.Message):
     reply = "Click on the the button below to share your location"
     await message.answer(reply, reply_markup=get_keyboard())
