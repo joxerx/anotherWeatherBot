@@ -12,3 +12,10 @@ def forecast(answer: Answer) -> str:
     return f'Минимальная температура на {answer.forecasts.date_ts}: {answer.forecasts.parts.day.temp_min}°C.\n' \
            f'Максимальная:  {answer.forecasts.parts.day.temp_min}°C.\n' \
            f'Средняя:  {answer.forecasts.parts.day.temp_avg}°C.\n'
+
+'''
+coordinates = Coordinates(latitude=59.916515, longitude=30.351841)
+print(weather(get_full_answer(Coordinates)))
+
+'''
+

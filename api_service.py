@@ -247,7 +247,7 @@ def parse_string_answer(ya_weather_response: str) -> Answer:
     )
 
 
-def get_full_answer(coordinates=Coordinates) -> Answer:
+def get_full_answer(coordinates: Coordinates) -> Answer:
     """"Generates Answer as object to manipulate with"""
     yandex_response = get_yandex_weather_response(
         longitude=coordinates.longitude,
@@ -260,3 +260,7 @@ def get_full_answer(coordinates=Coordinates) -> Answer:
 def get_yandex_weather_response(latitude: float, longitude: float) -> str:
     url = config.HEADER_YANDEX_API_CALL.format(latitude=latitude, longitude=longitude)
     return requests.get(url, headers=config.HEADER_YANDEX_API_CALL).text
+
+
+coordins = Coordinates(latitude=59.916515, longitude=30.351841)
+print(get_yandex_weather_response(latitude=coordins.latitude, longitude=coordins.longitude))
