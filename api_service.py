@@ -1,7 +1,6 @@
 import json
 from dataclasses import dataclass
 from datetime import datetime
-from enum import StrEnum
 
 import requests
 
@@ -106,7 +105,6 @@ class Part:
 @dataclass(slots=True, frozen=True)
 class Short:
     temp: float
-    temp_min: float
     feels_like: float
     condition: str  # need to convert to words
     wind_speed: float
@@ -181,12 +179,49 @@ def get_fact_weather(ya_weather_dict: dict) -> FactWeather:
 
 
 def get_one_part(ya_weather_dict: dict) -> Part:
-    pass
+    return Part(
+        temp_min=ya_weather_dict['temp_min'],
+        temp_avg=ya_weather_dict['temp_avg'],
+        temp_max=ya_weather_dict['temp_max'],
+        feels_like=ya_weather_dict['feels_like'],
+        condition=ya_weather_dict['condition'],
+        wind_speed=ya_weather_dict['wind_speed'],
+        wind_gust=ya_weather_dict['wind_gust'],
+        wind_dir=ya_weather_dict['wind_dir'],
+        pressure=ya_weather_dict['pressure'],
+        humidity=ya_weather_dict['humidity'],
+        prec_mm=ya_weather_dict['prec_mm'],
+        prec_type=ya_weather_dict['prec_type'],
+        prec_strength=ya_weather_dict['prec_strength'],
+        cloudness=ya_weather_dict['cloudness']
+    )
+
+
+def get_short_part(ya_weather_dict: dict) -> Short:
+    return Short(
+        temp=ya_weather_dict['temp'],
+        feels_like=ya_weather_dict['feels_like'],
+        condition=ya_weather_dict['condition'],
+        wind_speed=ya_weather_dict['wind_speed'],
+        wind_gust=ya_weather_dict['wind_gust'],
+        wind_dir=ya_weather_dict['wind_dir'],
+        pressure=ya_weather_dict['pressure'],
+        humidity=ya_weather_dict['humidity'],
+        prec_mm=ya_weather_dict['prec_mm'],
+        prec_type=ya_weather_dict['prec_type'],
+        prec_strength=ya_weather_dict['prec_strength'],
+        cloudness=ya_weather_dict['cloudness']
+    )
 
 
 def get_parts_forecast(ya_weather_dict: dict) -> Parts:
     return Parts(
-        morning=get_one_part(ya_weather_dict)
+        night=get_one_part(ya_weather_dict['night']),
+        morning=get_one_part(ya_weather_dict['morning']),
+        day=get_one_part(ya_weather_dict['day']),
+        evening=get_one_part(ya_weather_dict['evening']),
+        day_short=get_short_part(ya_weather_dict['day_short']),
+        night_short=get_short_part(ya_weather_dict['night_short'])
     )
 
 
@@ -225,4 +260,3 @@ def get_full_answer(coordinates=Coordinates) -> Answer:
 def get_yandex_weather_response(latitude: float, longitude: float) -> str:
     url = config.HEADER_YANDEX_API_CALL.format(latitude=latitude, longitude=longitude)
     return requests.get(url, headers=config.HEADER_YANDEX_API_CALL).text
-
