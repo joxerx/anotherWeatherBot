@@ -37,7 +37,7 @@ async def handle_location(message: types.Message):
         }
     else:
         if 'handledData' in users_coordinates[message.from_user.id]:
-            with open('out' + message.from_user.id + str(users_coordinates[message.from_user.id]['coordinates'])
+            with open('out' + str(message.from_user.id) + str(users_coordinates[message.from_user.id]['coordinates'])
                       + '.txt', "w") as file:
                 file.write(str(users_coordinates[message.from_user.id]['handledData']))
             file.close()
@@ -47,12 +47,13 @@ async def handle_location(message: types.Message):
     await message.answer(reply,
                          reply_markup=inline_keyboard.SETLOCATION)
 
-
+'''
 @dp.message_handler(commands=['setlocation'])
 async def cmd_locate_me(message: types.Message):
     reply = "Нажмите кнопку ниже, чтобы отправить текущую геопозицию."
     await message.answer(reply,
                          reply_markup=inline_keyboard.SETLOCATION)
+'''
 
 
 @dp.message_handler(commands=['weather'])
@@ -86,6 +87,19 @@ async def process_callback_weather(callback_query: types.CallbackQuery):
         text=messages.weather(users_coordinates[callback_query.from_user.id]['handledData']),
         reply_markup=inline_keyboard.WEATHER
     )
+
+
+@dp.message_handler(commands=['setlocation'])
+async def cmd_setlocation(message: types.Message):
+    reply = "Нажмите на кнопку ниже, чтобы выбрать локацию"
+    await message.answer(reply, reply_markup=get_keyboard())
+
+
+def get_keyboard():
+    keyboard = types.ReplyKeyboardMarkup()
+    button = types.KeyboardButton("Share Position", request_location=True)
+    keyboard.add(button)
+    return keyboard
 
 
 if __name__ == '__main__':
