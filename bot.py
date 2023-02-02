@@ -3,7 +3,6 @@ import logging
 from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
-import inline_keyboard
 
 import config
 import messages
@@ -43,17 +42,9 @@ async def handle_location(message: types.Message):
             file.close()
             del users_coordinates[message.from_user.id]['handledData']
         users_coordinates[message.from_user.id]['coordinates'] = [message.location.latitude, message.location.longitude]
-    reply = "Позиция обновлена!"
+    reply = 'Позиция обновлена!'
     await message.answer(reply,
-                         reply_markup=inline_keyboard.SETLOCATION)
-
-'''
-@dp.message_handler(commands=['setlocation'])
-async def cmd_locate_me(message: types.Message):
-    reply = "Нажмите кнопку ниже, чтобы отправить текущую геопозицию."
-    await message.answer(reply,
-                         reply_markup=inline_keyboard.SETLOCATION)
-'''
+                         reply_markup=get_keyboard())
 
 
 @dp.message_handler(commands=['weather'])
@@ -63,20 +54,20 @@ async def show_weather(message: types.Message):
                                   users_coordinates[message.from_user.id]['coordinates'][1])
         users_coordinates[message.from_user.id]['handledData'] = get_full_answer(coordinates)
     await message.answer(text=messages.weather(users_coordinates[message.from_user.id]['handledData']),
-                         reply_markup=inline_keyboard.WEATHER)
+                         reply_markup=get_keyboard())
 
 
 @dp.message_handler(commands=['start', 'help'])
 async def show_help_message(message: types.Message):
     await message.answer(
         text=f'С помощью бота можно узнать погоду в точке на карте.',
-        reply_markup=inline_keyboard.HELP)
+        reply_markup=get_keyboard())
 
 
 @dp.message_handler(commands='forecast')
 async def show_forecast(message: types.Message):
     await message.answer(text=messages.forecast(users_coordinates[message.from_user.id]['handledData']),
-                         reply_markup=inline_keyboard.FORECAST)
+                         reply_markup=get_keyboard())
 
 
 @dp.callback_query_handler(text='weather')
@@ -85,7 +76,7 @@ async def process_callback_weather(callback_query: types.CallbackQuery):
     await bot.send_message(
         callback_query.from_user.id,
         text=messages.weather(users_coordinates[callback_query.from_user.id]['handledData']),
-        reply_markup=inline_keyboard.WEATHER
+        reply_markup=get_keyboard()
     )
 
 
