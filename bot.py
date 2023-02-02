@@ -47,14 +47,6 @@ async def handle_location(message: types.Message):
     await message.answer(reply,
                          reply_markup=inline_keyboard.SETLOCATION)
 
-'''
-@dp.message_handler(commands=['setlocation'])
-async def cmd_locate_me(message: types.Message):
-    reply = "Нажмите кнопку ниже, чтобы отправить текущую геопозицию."
-    await message.answer(reply,
-                         reply_markup=inline_keyboard.SETLOCATION)
-'''
-
 
 @dp.message_handler(commands=['weather'])
 async def show_weather(message: types.Message):

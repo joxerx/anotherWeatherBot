@@ -261,8 +261,4 @@ def get_yandex_weather_response(latitude: float, longitude: float) -> str:
     url = config.WEATHER_YANDEX_API_CALL.format(latitude=latitude, longitude=longitude)
     return requests.get(url, headers=config.HEADER_YANDEX_API_CALL).text
 
-'''
-coordins = Coordinates(latitude=59.916515, longitude=30.351841)
-print(get_yandex_weather_response(latitude=coordins.latitude, longitude=coordins.longitude))
-'''
 
