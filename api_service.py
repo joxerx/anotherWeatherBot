@@ -7,7 +7,6 @@ import requests
 import config
 from coordinates import Coordinates
 
-
 condition_dict = {
     'clear': 'ясно',
     'partly-cloudy': 'малооблачно',
@@ -250,15 +249,15 @@ def parse_string_answer(ya_weather_response: str) -> Answer:
 def get_full_answer(coordinates: Coordinates) -> Answer:
     """"Generates Answer as object to manipulate with"""
     yandex_response = get_yandex_weather_response(
-        longitude=coordinates.longitude,
-        latitude=coordinates.latitude
+        latitude=coordinates.latitude,
+        longitude=coordinates.longitude
     )
     full_answer = parse_string_answer(yandex_response)
     return full_answer
 
 
 def get_yandex_weather_response(latitude: float, longitude: float) -> str:
-    url = config.WEATHER_YANDEX_API_CALL.format(latitude=latitude, longitude=longitude)
-    return requests.get(url, headers=config.HEADER_YANDEX_API_CALL).text
 
+    return requests.get(config.WEATHER_YANDEX_API_CALL.format(latitude=latitude, longitude=longitude),
+                        headers=config.HEADER_YANDEX_API_CALL).text
 
