@@ -32,8 +32,8 @@ BOT_API_TOKEN = 'bot:token'`
 
 WEATHER_YANDEX_API_CALL = ('https://api.weather.yandex.ru/v2/forecast?'
     'lat={latitude}'
-    '& lon={longitude}'
-    '& lang=ru_RU')
+    '&lon={longitude}'
+    '&lang=ru_RU')
   
 WEATHER_YANDEX_API_KEY = 'apiKey'
 HEADER_YANDEX_API_CALL = {'X-Yandex-API-Key': WEATHER_YANDEX_API_KEY}
