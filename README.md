@@ -38,3 +38,4 @@ WEATHER_YANDEX_API_CALL = ('https://api.weather.yandex.ru/v2/forecast?'
 WEATHER_YANDEX_API_KEY = 'apiKey'
 HEADER_YANDEX_API_CALL = {'X-Yandex-API-Key': WEATHER_YANDEX_API_KEY}
 ```
+![image](https://user-images.githubusercontent.com/29130600/216273135-969f84de-19af-410c-a524-1ca09d3dfd73.png)
