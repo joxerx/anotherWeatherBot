@@ -4,7 +4,6 @@ from api_service import Answer
 def weather(answer: Answer) -> str:
     """Returns a message about the temperature and weather description"""
     return f'По данным сервиса Яндекс Погода: \n' \
-           f'{answer.geo_object}.\n' \
            f'За окном сейчас: {answer.fact.condition}.\n' \
            f'Температура воздуха: {answer.fact.temp}°C.\n' \
            f'По ощущениям {answer.fact.feels_like}°C\n' \
