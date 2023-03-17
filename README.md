@@ -30,6 +30,7 @@
 ``` 
 BOT_API_TOKEN = 'bot:token'`
 
+# ВНИМАНИЕ Ниже вызов с тестовым тарифом. При использовании тарифа "Погода на вашем сайте" заменить forecast на informers:
 WEATHER_YANDEX_API_CALL = ('https://api.weather.yandex.ru/v2/forecast?'
     'lat={latitude}'
     '&lon={longitude}'
