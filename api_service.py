@@ -4,8 +4,13 @@ from datetime import datetime
 
 import requests
 
-import config
+from config import config
 from coordinates import Coordinates
+
+
+yandex_url = 'https://api.weather.yandex.ru/v2/informers?lat={latitude}&lon={longitude}&lang=ru_RU'
+request_header = {'X-Yandex-API-Key': config.YANDEX_API_KEY}
+
 
 condition_dict = {
     'clear': 'ясно',
@@ -80,7 +85,6 @@ class FactWeather:
     obs_time: datetime
     prec_type: int  # need to convert to str
     prec_strength: float  # need to identify and show strength
-    cloudness: str  # need to convert to words
 
 
 @dataclass(slots=True, frozen=True)
@@ -98,7 +102,6 @@ class Part:
     prec_mm: float  # expected mm precipitation
     prec_type: int  # need to convert to type of precipitation
     prec_strength: float  # need to convert to words type and strength
-    cloudness: float  # need to convert to words
 
 
 @dataclass(slots=True, frozen=True)
@@ -114,7 +117,6 @@ class Short:
     prec_mm: float  # expected mm precipitation
     prec_type: int  # need to convert to type of precipitation
     prec_strength: float  # need to convert to words type and strength
-    cloudness: float  # need to convert to words
 
 
 @dataclass(slots=True, frozen=True)
@@ -139,7 +141,6 @@ class Forecast:
 
 @dataclass(slots=True, frozen=True)
 class CityInfo:
-    def_pressure: float
     url: str
 
 
@@ -147,14 +148,11 @@ class CityInfo:
 class Answer:
     now: datetime
     info: CityInfo
-    geo_object: str
     fact: FactWeather
-    forecasts: Forecast
 
 
 def get_city_info(ya_weather_dict: dict) -> CityInfo:
     return CityInfo(
-        def_pressure=ya_weather_dict['info']['def_pressure_mm'],
         url=ya_weather_dict['info']['url']
     )
 
@@ -173,7 +171,6 @@ def get_fact_weather(ya_weather_dict: dict) -> FactWeather:
         obs_time=datetime.fromtimestamp(ya_weather_dict['fact']['obs_time']),
         prec_type=ya_weather_dict['fact']['humidity'],
         prec_strength=ya_weather_dict['fact']['humidity'],
-        cloudness=cloudness[ya_weather_dict['fact']['cloudness']]
     )
 
 
@@ -192,7 +189,6 @@ def get_one_part(ya_weather_dict: dict) -> Part:
         prec_mm=ya_weather_dict['prec_mm'],
         prec_type=ya_weather_dict['prec_type'],
         prec_strength=ya_weather_dict['prec_strength'],
-        cloudness=ya_weather_dict['cloudness']
     )
 
 
@@ -209,7 +205,6 @@ def get_short_part(ya_weather_dict: dict) -> Short:
         prec_mm=ya_weather_dict['prec_mm'],
         prec_type=ya_weather_dict['prec_type'],
         prec_strength=ya_weather_dict['prec_strength'],
-        cloudness=ya_weather_dict['cloudness']
     )
 
 
@@ -240,9 +235,7 @@ def parse_string_answer(ya_weather_response: str) -> Answer:
     return Answer(
         now=datetime.fromtimestamp(ya_weather_dict['now']),
         info=get_city_info(ya_weather_dict),
-        geo_object=ya_weather_dict['geo_object']['district']['name'],
         fact=get_fact_weather(ya_weather_dict),
-        forecasts=get_forecasts(ya_weather_dict)
     )
 
 
@@ -257,7 +250,6 @@ def get_full_answer(coordinates: Coordinates) -> Answer:
 
 
 def get_yandex_weather_response(latitude: float, longitude: float) -> str:
-
-    return requests.get(config.WEATHER_YANDEX_API_CALL.format(latitude=latitude, longitude=longitude),
-                        headers=config.HEADER_YANDEX_API_CALL).text
+    return requests.get(yandex_url.format(latitude=latitude, longitude=longitude),
+                        headers=request_header).text
 
