@@ -4,7 +4,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.utils import executor
 
 
-import config
+from config import config
 import messages
 from api_service import get_full_answer
 from coordinates import Coordinates
@@ -13,8 +13,10 @@ from coordinates import Coordinates
 logging.basicConfig(level=logging.INFO)
 
 # Initialize bot and dispatcher
-bot = Bot(token=config.BOT_API_TOKEN, parse_mode="html")
+bot = Bot(token=config.BOT_TOKEN, parse_mode="html")
 dp = Dispatcher(bot)
+
+# Initialize redis
 
 '''
 users_coordinates = {
